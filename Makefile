@@ -23,7 +23,7 @@ down:
 	docker compose down
 
 reset-db:
-	php ${ARTISAN_CMD_PATH} migrate:fresh --seed
+	docker compose exec laravel php ${ARTISAN_CMD_PATH} migrate:fresh --seed
 
 init:
 	php ${ARTISAN_CMD_PATH} key:generate
