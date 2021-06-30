@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\User\ShowUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'signIn']); // ログイン
-    Route::get('/logout', [AuthController::class, 'signOut']); // ログアウト
+    Route::post('/logout', [AuthController::class, 'signOut']); // ログアウト
+    Route::middleware('auth:sanctum')->get('/self', ShowUserController::class); // 自分の情報
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
