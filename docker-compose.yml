@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.6.2
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: alexander
+      MYSQL_USER: alexander
+      MYSQL_PASSWORD: alexander-password
+      MYSQL_ROOT_PASSWORD: password
+
+  laravel:
+    build:
+      context: .
+    volumes:
+      - ./:/app
+      - laravel:/laravel/app
+    working_dir: /app
+    ports:
+      - 8000:8000
+volumes:
+  mariadb:
+    driver: local
+  laravel:
+    driver: local
