@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->make([
-            'name' => 'アドミン',
+            'first_name' => 'アドミン',
+            'last_name' => 'ララベル',
             'email' => 'laravel-a@example.com',
             'password' => Hash::make('password'),
         ])->save();
