@@ -23,7 +23,7 @@ class RegisterUserController extends Controller
         $user->fill($request->all())->save();
 
         return response()->json([
-            'status' => 200,
+            'code' => 200,
         ]);
     }
 }
