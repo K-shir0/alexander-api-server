@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ShowUserController extends Controller
+class RegisterUserController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,11 +17,13 @@ class ShowUserController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $user = Auth::user();
+        $user = new User();
+
+        // fillでUserクラスのfillableの部分に追加しDBに保存
+        $user->fill($request->all())->save();
 
         return response()->json([
             'code' => 200,
-            'data' => ['user' => $user],
         ]);
     }
 }

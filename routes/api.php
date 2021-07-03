@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\RegisterUserController;
 use App\Http\Controllers\User\ShowUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,11 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'signOut']); // ログアウト
     Route::middleware('auth:sanctum')->get('/self', ShowUserController::class); // 自分の情報
 });
+
+Route::prefix('users')->group(function () {
+    Route::post('/', RegisterUserController::class); // ユーザー登録
+});
+
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
