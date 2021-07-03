@@ -20,7 +20,7 @@ class ShowUserController extends Controller
         $user = Auth::user();
 
         return response()->json([
-            'status' => 200,
+            'code' => 200,
             'data' => ['user' => $user],
         ]);
     }
