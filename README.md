@@ -14,6 +14,18 @@ make install
 make run-docker
 ```
 
+起動手順
+```
+make up
+
+make run-docker
+```
+
+終了手順（必ず実行して下さい）
+```
+make down
+```
+
 プロジェクト更新手順
 ```
 make up
