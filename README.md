@@ -12,6 +12,8 @@ make up
 make install
 
 make run-docker
+
+make reset-db
 ```
 
 起動手順
@@ -31,6 +33,8 @@ make down
 make up
 
 make install
+
+make reset-db
 ```
 
 ---
