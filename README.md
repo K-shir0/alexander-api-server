@@ -65,3 +65,9 @@ make mariadb
 
 リリースビルド
 ```
+
+開発用ログイン
+```
+id laravel-a@example.com
+pass password
+```
