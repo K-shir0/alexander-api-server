@@ -18,20 +18,20 @@ class AuthController extends Controller
         // ログインするための情報
         $credential = $request->only(['email', 'password']);
 
-        $status = 401;
+        $code = 401;
         $data = null;
 
         // 認証実行
         if (Auth::attempt($credential)) {
             // 認証成功
-            $status = 200;
+            $code = 200;
             $data = ['user' => Auth::user()];
         }
 
         return response()->json([
-            'status' => $status,
+            'code' => $code,
             'data' => $data
-        ], $status);
+        ], $code);
     }
 
     /**
@@ -43,7 +43,7 @@ class AuthController extends Controller
         Auth::logout();
 
         return response()->json([
-            'status' => 200,
+            'code' => 200,
         ]);
     }
 }
