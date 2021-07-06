@@ -5,7 +5,7 @@ MARIADB_ROOT_PASSWORD=password
 
 ARTISAN_CMD_PATH=artisan
 
-.PHONY: run ps up down reset-db init mariadb
+.PHONY: run ps up down reset-db init install mariadb
 
 run:
 	php ${ARTISAN_CMD_PATH} serve
@@ -27,6 +27,9 @@ reset-db:
 
 init:
 	php ${ARTISAN_CMD_PATH} key:generate
+
+install:
+	docker compose exec laravel composer install
 
 # mariadb
 mariadb:
