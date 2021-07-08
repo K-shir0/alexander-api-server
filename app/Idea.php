@@ -16,6 +16,11 @@ class Idea extends Entity
      */
     protected $table = 'ideas';
 
+    protected $fillable = [
+        'title',
+    ];
+
+
     /**
      * ClosureTable model instance.
      *

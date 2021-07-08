@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Idea\IndexIdeaController;
+use App\Http\Controllers\Idea\RegisterIdeaController;
 use App\Http\Controllers\User\RegisterUserController;
 use App\Http\Controllers\User\ShowUserController;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,7 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('ideas')->group(function () {
     Route::get('/', IndexIdeaController::class); // アイデア一覧
+    Route::post('/', RegisterIdeaController::class); // アイデア登録
 });
 
 
