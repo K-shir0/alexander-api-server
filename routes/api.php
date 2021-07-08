@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Idea\IndexIdeaController;
 use App\Http\Controllers\User\RegisterUserController;
 use App\Http\Controllers\User\ShowUserController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,10 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('users')->group(function () {
     Route::post('/', RegisterUserController::class); // ユーザー登録
+});
+
+Route::prefix('ideas')->group(function () {
+    Route::get('/', IndexIdeaController::class); // アイデア一覧
 });
 
 
