@@ -14,6 +14,9 @@ make install
 make run-docker
 
 make reset-db
+
+別タブで
+make run-docker-echo
 ```
 
 起動手順
@@ -21,6 +24,9 @@ make reset-db
 make up
 
 make run-docker
+
+別タブで
+make run-docker-echo
 ```
 
 終了手順（必ず実行して下さい）
@@ -30,6 +36,11 @@ make down
 
 プロジェクト更新手順
 ```
+make down-clean
+
+（※1個目は特に指定なければスキップ）
+--------------------------------
+
 make up
 
 make install
@@ -48,16 +59,19 @@ make init
 make install
 
 Dockerを起動
-make run-docker
+make up
 
 Dockerが立ち上がってるか確認
 make ps
 
 Dockerを終了
-make run-docker
+make down
 
 開発モードで実行
 make run-docker
+
+echoサーバを実行
+make run-docker-echo
 
 DBをリセット&&マイグレーション
 make reset-db
@@ -70,8 +84,8 @@ make mariadb
 リリースビルド
 ```
 
-開発用ログイン
+開発用ログイン(ID, PASSWORD)
 ```
-id laravel-a@example.com
-pass password
+laravel-a@example.com
+password
 ```
