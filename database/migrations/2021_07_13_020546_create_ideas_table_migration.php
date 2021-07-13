@@ -10,8 +10,11 @@ class CreateIdeasTableMigration extends Migration
     {
         Schema::create('ideas', function (Blueprint $table) {
             $table->uuid('id')->primary();
-//            $table->uuid('user_id');
+            $table->foreignUuid('user_id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('space_id')->on('spaces')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('title');
+            $table->unsignedBigInteger('status');
+            $table->boolean('public');
             $table->timestamps();
             $table->foreignUuid('parent_id')->nullable()->on('ideas');
             $table->integer('position', false, true);

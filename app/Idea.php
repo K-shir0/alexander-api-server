@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Models\User;
 use Franzose\ClosureTable\Models\Entity;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,4 +44,8 @@ class Idea extends Entity
      * @var \App\IdeaClosure
      */
     protected $closure = 'App\IdeaClosure';
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -46,14 +46,36 @@ class DatabaseSeeder extends Seeder
             'user_id' => $admin->id
         ]);
 
-        $admin_space = Space::query()->get();
+        $admin_space = Space::query()->first();
 
-        Space::factory($users->count() * 5)->create();
+        // ユーザー全員
+        Space::factory($users->count() * 5)->create([
+            'user_id' => $users->pluck('id')->random(),
+        ]);
+
+        $spaces = Space::query()->get();
 
 
         /*
          * Add Ideas
          */
+        // 初期ユーザー用
+        Idea::factory(5)->create([
+            'user_id' => $admin->id,
+            'space_id' => $admin_space->pluck('id')->random(),
+        ]);
+
+        // ユーザー全員
+        Idea::factory($users->count() * 25)->create([
+            'user_id' => $users->pluck('id')->random(),
+            'space_id' => $spaces->pluck('id')->random(),
+        ]);
+
+
+//        Idea::factory($users->count() * 25)->create([
+//            'space_id' => $spaces->pluck('id')->random(),
+//            'user_id' => $users->pluck('id')->random()
+//        ]);
 
 //        Space::factory()->make([
 //            'title' => '新規のアイデア',
