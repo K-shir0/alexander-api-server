@@ -19,6 +19,8 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <script src="{{ mix('js/app.js') }}"></script>
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">

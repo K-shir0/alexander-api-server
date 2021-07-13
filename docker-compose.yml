@@ -13,15 +13,33 @@ services:
       MYSQL_PASSWORD: alexander-password
       MYSQL_ROOT_PASSWORD: password
 
+  redis:
+    image: redis:6.2.4
+    ports:
+      - 6379:6379
+
   laravel:
     build:
       context: .
+      dockerfile: Dockerfile-laravel
     volumes:
       - ./:/app
       - laravel:/laravel/app
     working_dir: /app
     ports:
       - 8000:8000
+
+  echo:
+    build:
+      context: .
+      dockerfile: Dockerfile-echo
+    volumes:
+      - ./:/app
+      - laravel:/laravel/app
+    working_dir: /app
+    ports:
+      - 6001:6001
+    tty: true
 volumes:
   mariadb:
     driver: local

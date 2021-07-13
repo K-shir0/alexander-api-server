@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Space;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -44,5 +45,10 @@ class UserFactory extends Factory
                 'email_verified_at' => null,
             ];
         });
+    }
+
+    public function spaces()
+    {
+        return $this->hasMany(Space::class);
     }
 }

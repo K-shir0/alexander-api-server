@@ -9,25 +9,30 @@ class CreateIdeasTableMigration extends Migration
     public function up()
     {
         Schema::create('ideas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignUuid('space_id')->on('spaces')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('title');
+            $table->unsignedBigInteger('status');
+            $table->boolean('public');
             $table->timestamps();
-            $table->integer('parent_id')->unsigned()->nullable();
+            $table->foreignUuid('parent_id')->nullable()->on('ideas');
             $table->integer('position', false, true);
             $table->softDeletes();
 
-            $table->foreign('parent_id')
-                ->references('id')
-                ->on('ideas')
-                ->onDelete('set null');
+//            $table->foreign('parent_id')
+//                ->references('id')
+//                ->on('ideas')
+//                ->onDelete('set null');
 
+//            $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
 
         Schema::create('idea_closure', function (Blueprint $table) {
             $table->increments('closure_id');
 
-            $table->integer('ancestor', false, true);
-            $table->integer('descendant', false, true);
+            $table->uuid('ancestor');
+            $table->uuid('descendant');
             $table->integer('depth', false, true);
 
             $table->foreign('ancestor')
