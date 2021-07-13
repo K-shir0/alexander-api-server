@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Idea;
+use App\Models\Space;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        /*
+         * Add Users
+         */
         User::factory()->make([
             'first_name' => 'アドミン',
             'last_name' => 'アドミン',
@@ -23,18 +27,50 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ])->save();
 
-        Idea::factory()->make([
-            'title' => 'タイトル',
-        ])->save();
+        // 初期ユーザー
+        $admin = User::query()->first();
+
+        User::factory()->count(5)->create([
+            'password' => Hash::make('password'),
+        ]);
+
+        // ユーザー全員
+        $users = User::query()->get();
 
 
-        Idea::factory()->make([
-            'title' => 'タイトル',
-        ])->save();
+        /*
+         * Add Spaces
+         */
+        // 初期ユーザー用
+        Space::factory(5)->create([
+            'user_id' => $admin->id
+        ]);
 
-        Idea::factory()->make([
-            'title' => 'タイトル',
-            'parent_id' => 1,
-        ])->save();
+        $admin_space = Space::query()->get();
+
+        Space::factory($users->count() * 5)->create();
+
+
+        /*
+         * Add Ideas
+         */
+
+//        Space::factory()->make([
+//            'title' => '新規のアイデア',
+//        ])->save();
+
+//        Idea::factory()->make([
+//            'title' => 'タイトル',
+//        ])->save();
+//
+//
+//        Idea::factory()->make([
+//            'title' => 'タイトル',
+//        ])->save();
+//
+//        Idea::factory()->make([
+//            'title' => 'タイトル',
+//            'parent_id' => 1,
+//        ])->save();
     }
 }
