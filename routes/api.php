@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Idea\IndexIdeaController;
 use App\Http\Controllers\Idea\RegisterIdeaController;
+use App\Http\Controllers\Space\GetMySpaceController;
 use App\Http\Controllers\Space\SetSpaceController;
 use App\Http\Controllers\User\RegisterUserController;
 use App\Http\Controllers\User\ShowUserController;
@@ -35,6 +36,9 @@ Route::prefix('ideas')->group(function () {
 
 Route::middleware('auth:sanctum')
     ->post('setSpace', SetSpaceController::class); // スペース作成
+
+Route::middleware('auth:sanctum')
+    ->get('getSpace', GetMySpaceController::class); // 自分のスペース取得
 
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
