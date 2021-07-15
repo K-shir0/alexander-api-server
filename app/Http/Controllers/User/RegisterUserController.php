@@ -28,6 +28,17 @@ class RegisterUserController extends Controller
 
         $user = new User();
         $status = 200;
+        $display_name = $request->last_name.$request->first_name;
+        $user->display_name = $display_name;
+
+        // fillでUserクラスのfillableの部分に追加しDBに保存
+        if (!$user->fill($validated_request)
+        ->fill($request->all())->save()) {
+            $status = 400;
+            $message = 'Bad Request';
+        }
+
+
 
         // fillでUserクラスのfillableの部分に追加しDBに保存
         if (!$user->fill($validated_request)
