@@ -25,7 +25,6 @@ class IdeaFactory extends Factory
     {
         return [
             'user_id' => User::query()->get()->pluck('id')->random(),
-            'space_id' => Space::query()->get()->pluck('id')->random(),
             'title' => $this->faker->name,
             'status' => $this->faker->numberBetween(0, 3),
             'public' => $this->faker->boolean,

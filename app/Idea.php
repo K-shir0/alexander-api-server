@@ -1,10 +1,13 @@
 <?php
 namespace App;
 
+use App\Models\Space;
 use App\Models\User;
 use Franzose\ClosureTable\Models\Entity;
 use GoldSpecDigital\LaravelEloquentUUID\Database\Eloquent\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 
 class Idea extends Entity
@@ -45,7 +48,13 @@ class Idea extends Entity
      */
     protected $closure = 'App\IdeaClosure';
 
-    public function user() {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
+    }
+
+    public function spaces(): BelongsToMany
+    {
+        return $this->belongsToMany(Space::class, 'space_idea');
     }
 }

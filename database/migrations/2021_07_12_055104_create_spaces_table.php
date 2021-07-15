@@ -15,7 +15,7 @@ class CreateSpacesTable extends Migration
     {
         Schema::create('spaces', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
+            $table->foreignUuid('user_id');
             $table->string('title')->default('');
             $table->timestamps();
 
