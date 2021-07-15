@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Idea\IndexIdeaController;
 use App\Http\Controllers\Idea\RegisterIdeaController;
+use App\Http\Controllers\Space\SetSpaceController;
 use App\Http\Controllers\User\RegisterUserController;
 use App\Http\Controllers\User\ShowUserController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [AuthController::class, 'signIn']); // ログイン
+    Route::post('/login', [AuthController::class, 'signIn'])->name('login'); // ログイン
     Route::post('/logout', [AuthController::class, 'signOut']); // ログアウト
     Route::middleware('auth:sanctum')->get('/self', ShowUserController::class); // 自分の情報
 });
@@ -31,6 +32,9 @@ Route::prefix('ideas')->group(function () {
     Route::get('/', IndexIdeaController::class); // アイデア一覧
     Route::post('/', RegisterIdeaController::class); // アイデア登録
 });
+
+Route::middleware('auth:sanctum')
+    ->post('setSpace', SetSpaceController::class); // スペース作成
 
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
