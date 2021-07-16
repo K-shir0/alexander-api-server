@@ -11,7 +11,6 @@ class CreateIdeasTableMigration extends Migration
         Schema::create('ideas', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignUuid('space_id')->on('spaces')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('title');
             $table->unsignedBigInteger('status');
             $table->boolean('public');
