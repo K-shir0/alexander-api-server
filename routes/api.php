@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Idea\IndexIdeaController;
 use App\Http\Controllers\Idea\RegisterIdeaController;
+use App\Http\Controllers\Page\GetPageController;
+use App\Http\Controllers\Page\SavePageController;
 use App\Http\Controllers\Space\GetMySpaceController;
 use App\Http\Controllers\Space\SetSpaceController;
 use App\Http\Controllers\User\RegisterUserController;
@@ -39,6 +41,12 @@ Route::middleware('auth:sanctum')
 
 Route::middleware('auth:sanctum')
     ->get('getSpace', GetMySpaceController::class); // 自分のスペース取得
+
+Route::middleware('auth:sanctum')
+    ->post('getPage', GetPageController::class); // 自分のアイデアを取得
+
+Route::middleware('auth:sanctum')
+    ->post('savePage', SavePageController::class); // 自分のアイデアを保存
 
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
