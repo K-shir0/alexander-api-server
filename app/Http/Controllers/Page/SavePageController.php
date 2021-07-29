@@ -32,33 +32,17 @@ class SavePageController extends Controller
 
             $operations = collect($transaction['operations']);
 
-            foreach($operations as $operation) {
+            foreach ($operations as $operation) {
                 $command = $operation['command'];
 
                 $args = $operation['args'];
 
-                // TODO コマンド毎に分岐して処理
+                // コマンド毎に分岐して処理
                 switch ($command) {
                     case 'next':
-                        // args: [追加するid, 一つ前のid]
-                        $idea = new Idea();
-
-                        // TODO あれば挿入、無ければ最後に追加
-                        $idea['id'] = $args[0];
-
-                        // TODO 一つ前のアイデアを探してポジションをセット
-                        // TODO 懸念点、positionがずれたときにやばそう
-                        if (count($args) >= 2) {
-                            $currentIdea = Idea::query()->where('id', '=', $args[1])->first();
-                            $idea['user_id'] = $userId;
-                            $idea['title'] = '';
-                            $idea['status'] = 0;
-                            $idea['public'] = false;
-                            $idea['position'] = $currentIdea['position'] + 1;
-                        }
+                        $idea = $this->next($userId, $args[0], $args[1]);
 
                         $ideas[$args[0]] = $idea;
-
                         break;
                 }
             }
@@ -66,8 +50,10 @@ class SavePageController extends Controller
 
             // TODO 保存処理
             foreach ($ideas as $idea) {
+                // アイデアの作成
                 $idea->save();
-                // アソシエーション
+
+                // スペースにアイデアを紐付ける
                 $idea->spaces()->syncWithoutDetaching([$spaceId]);
             }
 
@@ -77,22 +63,35 @@ class SavePageController extends Controller
             'code' => 200,
             'data' => $transactions
         ]);
-//        $spaceId = $request->spaceId;
+    }
 
-        // TODO アイデアの作成
+    /***
+     * アイデアを作成する処理
+     *
+     * @param $userId
+     * @param $ideaId
+     * @param $previousIdea
+     * 一つ前のアイデア　
+     * @return Idea
+     */
+    private function next($userId, $ideaId, $previousIdea): Idea
+    {
+        // args: [追加するid, 一つ前のid]
+        $idea = new Idea();
 
-        // TODO シンクする
+        // 一つ前のアイデアを探してポジションをセット
+        // TODO 懸念点、positionがずれたときにやばそう
+        if (isset($previousIdea)) {
+            $currentIdea = Idea::query()->where('id', '=', $previousIdea)->first();
+            $idea['position'] = $currentIdea['position'] + 1;
+        }
 
-//        $authUser = Auth::id();
-//        $addIdea = new Idea(['id' => 'aaa', 'position' => 0, 'user_id' => $authUser, 'title' => '', 'status' => 0, 'public' => false]);
-//
-//        $addIdea->save();
+        $idea['id'] = $ideaId;
+        $idea['user_id'] = $userId;
+        $idea['title'] = '';
+        $idea['status'] = 0;
+        $idea['public'] = false;
 
-//        $idea = Idea::query()->find($request->id)->addSibling($addIdea);
-
-//        dd($idea);
-
-
-        // addSiblings(array $siblings, $from = null);
+        return $idea;
     }
 }
