@@ -37,7 +37,11 @@ class Idea extends Entity
     public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'title',
+        'user_id',
+        'status',
+        'public'
     ];
 
 
