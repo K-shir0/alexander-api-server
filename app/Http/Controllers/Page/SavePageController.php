@@ -9,6 +9,7 @@ use Franzose\ClosureTable\Models\Entity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function Sodium\add;
 
 class SavePageController extends Controller
 {
@@ -23,12 +24,12 @@ class SavePageController extends Controller
         $userId = Auth::id();
         $transactions = collect($request['transactions']);
 
-        // トランザクション毎に処理
-        $transactions->map(function ($transaction) use ($userId) {
-            $spaceId = $transaction['space_id'];
+        // upsertするやつ
+        $ideas = [];
 
-            // upsertするやつ
-            $ideas = [];
+        // トランザクション毎に処理
+        foreach ($transactions as $transaction) {
+            $spaceId = $transaction['space_id'];
 
             $operations = collect($transaction['operations']);
 
@@ -40,9 +41,22 @@ class SavePageController extends Controller
                 // コマンド毎に分岐して処理
                 switch ($command) {
                     case 'next':
+                        // arg0: newIdeaId, arg1: currentSpaceId,
                         $idea = $this->next($userId, $args[0], $args[1]);
 
                         $ideas[$args[0]] = $idea;
+                        break;
+                    case 'editIdeaTitle':
+                        // arg0: ideaId, arg1: title,
+                        $idea = $this->titleChange($userId, $args[0], $args[1]);
+
+                        $ideas[] = $idea;
+                        break;
+                    case 'editIdeaContent':
+                        // arg0: ideaId, arg1: contents,
+                        $idea = $this->ideaChange($userId, $args[0], $args[1]);
+
+                        $ideas[] = $idea;
                         break;
                 }
             }
@@ -57,11 +71,12 @@ class SavePageController extends Controller
                 $idea->spaces()->syncWithoutDetaching([$spaceId]);
             }
 
-        });
+        }
 
+        // TODO なぜTransaction
         return response()->json([
             'code' => 200,
-            'data' => $transactions
+            'data' => $ideas
         ]);
     }
 
@@ -91,6 +106,30 @@ class SavePageController extends Controller
         $idea['title'] = '';
         $idea['status'] = 0;
         $idea['public'] = false;
+
+        return $idea;
+
+
+    }
+
+    private function titleChange($userId, $ideaId, $contents)
+    {
+        // TODO アイデアが存在したら追加
+        // args: [追加するid, 一つ前のid]
+        $idea = Idea::query()->find($ideaId);
+
+        $idea['title'] = $contents;
+
+        return $idea;
+    }
+
+    private function ideaChange($userId, $ideaId, $contents)
+    {
+        // TODO アイデアが存在したら追加
+        // args: [追加するid, 一つ前のid]
+        $idea = Idea::query()->find($ideaId);
+
+        $idea['content'] = $contents;
 
         return $idea;
     }
