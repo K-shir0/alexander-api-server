@@ -42,7 +42,7 @@ class SavePageController extends Controller
                 switch ($command) {
                     case 'next':
                         // arg0: newIdeaId, arg1: currentSpaceId,
-                        $idea = $this->next($userId, $args[0], $args[1]);
+                        $idea = $this->next($userId, $args[0], $args[1] ?? null);
 
                         $ideas[$args[0]] = $idea;
                         break;
@@ -57,6 +57,15 @@ class SavePageController extends Controller
                         $idea = $this->ideaChange($userId, $args[0], $args[1]);
 
                         $ideas[] = $idea;
+                        break;
+                    case 'deleteIdea':
+                        // arg0: ideaId,
+                        // TODO 追加
+                        $this->ideaDelete($args[0]);
+                        break;
+                    case 'editSpaceTitle':
+                        // arg0: contents,
+                        $this->editSpaceTitle($spaceId, $args[0]);
                         break;
                 }
             }
@@ -118,7 +127,7 @@ class SavePageController extends Controller
         // args: [追加するid, 一つ前のid]
         $idea = Idea::query()->find($ideaId);
 
-        $idea['title'] = $contents;
+        $idea['title'] = $contents ?? '';
 
         return $idea;
     }
@@ -129,8 +138,25 @@ class SavePageController extends Controller
         // args: [追加するid, 一つ前のid]
         $idea = Idea::query()->find($ideaId);
 
-        $idea['content'] = $contents;
+        $idea['content'] = $contents ?? '';
 
         return $idea;
+    }
+
+    private function ideaDelete($ideaId): void
+    {
+        // args: [削除id,]
+        Idea::query()->find($ideaId)->delete();
+    }
+
+    private function editSpaceTitle($spaceId, $contents)
+    {
+        // TODO アイデアが存在したら追加
+        // args: [追加するid, 一つ前のid]
+        $space = Space::query()->find($spaceId);
+
+        $space['title'] = $contents ?? '';
+
+        $space->save();
     }
 }
